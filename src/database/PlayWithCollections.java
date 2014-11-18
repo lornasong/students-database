@@ -1,8 +1,6 @@
 package database;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -40,9 +38,6 @@ public class PlayWithCollections {
 		
 		findDuplicateLastNames(elements);
 		
-		//Integer vs. int?
-		Map<Integer, Student> studentMap = new HashMap<Integer, Student>();
-
 	}
 	
 	/**
