@@ -72,9 +72,11 @@ public class StudentDatabase {
 	/**
 	 * Creates an instance of Student and adds object to arrayList of database
 	 */
-	public void addStudent(String firstName, String lastName, int age) {
+	public String addStudent(String firstName, String lastName, int age) {
 		Student student = new Student(firstName, lastName, age);
 		studentList.add(student);
+		
+		return student.toString() + " has been sucessfully added";
 	}
 
 	/**
@@ -96,6 +98,27 @@ public class StudentDatabase {
 			for (Student student : studentList) {
 				System.out.println(student); // This is the student.toString()
 			}
+		}
+
+	}
+	
+	public String getStudentListString() {
+
+		// Case that no student is enrolled
+		if (studentList.isEmpty()) {
+			return "Error: No students are enrolled";
+		}
+		// Case that students are enrolled
+		else {
+
+			StringBuilder sb = new StringBuilder();
+			
+			for (Student student : studentList) {
+				sb.append(student); // This is the student.toString()
+				sb.append("\n\r");
+			}
+			
+			return sb.toString();
 		}
 
 	}
