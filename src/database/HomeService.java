@@ -13,9 +13,9 @@ import javax.ws.rs.QueryParam;
 @Path("/home")
 public class HomeService {
 	
-	private final StudentDatabase db;
+	private final StudentDatabaseWeb db;
 	
-	public HomeService(StudentDatabase db){
+	public HomeService(StudentDatabaseWeb db){
 		this.db = db;
 	}
 
@@ -38,7 +38,7 @@ public class HomeService {
 		sb.append("<form action='http://localhost:8080/home/modify'><input type='submit' value='Modify'></form>");
 		sb.append("<form action='http://localhost:8080/home/search'><input type='submit' value='Search'></form>");
 		sb.append("<form action='http://localhost:8080/home/view_default'><input type='submit' value='View'></form>");
-		sb.append("<input type='button' value='Export to CSV'/>");
+		sb.append("<form action='http://localhost:8080/home/export'><input type='submit' value='Export'></form>");
 
 		sb.append("</body></html>\n");
 		return sb.toString();

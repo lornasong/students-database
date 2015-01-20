@@ -21,7 +21,7 @@ public class Controller {
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				System.in));
-		
+
 		// User enter school name for database
 		StudentDatabase database = createSchoolDatabase(reader);
 
@@ -93,7 +93,6 @@ public class Controller {
 				System.out.println("Error: user input is not of type integer");
 			} catch (IOException e) {
 				System.out.println("Error occurred");
-				
 
 			}
 		}
@@ -142,7 +141,8 @@ public class Controller {
 	 * that first name and last name are not both like-integer. Checks that age
 	 * is reasonable.
 	 */
-	private static void addNewStudent(StudentDatabase database, BufferedReader reader) {
+	private static void addNewStudent(StudentDatabase database,
+			BufferedReader reader) {
 
 		try {
 
@@ -187,7 +187,8 @@ public class Controller {
 	/**
 	 * User Option 2: remove a student
 	 */
-	private static void removeStudent(StudentDatabase database, BufferedReader reader) {
+	private static void removeStudent(StudentDatabase database,
+			BufferedReader reader) {
 
 		try {
 
@@ -233,12 +234,13 @@ public class Controller {
 	 * 
 	 * If name entered, check if it is a full name
 	 */
-	private static void searchForStudent(StudentDatabase database, BufferedReader reader) {
+	private static void searchForStudent(StudentDatabase database,
+			BufferedReader reader) {
 
 		try {
-			
+
 			System.out
-			.println("Please enter the full name or ID of the student you wish to search");
+					.println("Please enter the full name or ID of the student you wish to search");
 			String userInput = reader.readLine();
 
 			// Given ID, search for name
@@ -252,7 +254,7 @@ public class Controller {
 							.println("Error: student ID does not exist in database");
 				}
 
-			// Given full name, search for ID
+				// Given full name, search for ID
 			} else if (isInputFullName(userInput)) {
 
 				try {
@@ -264,7 +266,7 @@ public class Controller {
 							.println("Error: student name does not exist in database");
 				}
 
-			// Not given full name (or ID)
+				// Not given full name (or ID)
 			} else {
 
 				System.out.println("Error: user input is not full name");
@@ -293,7 +295,8 @@ public class Controller {
 	 * User Option 5: edit student name. Take in full name. Enter in new first
 	 * and last name
 	 */
-	private static void editStudentName(StudentDatabase database, BufferedReader reader) {
+	private static void editStudentName(StudentDatabase database,
+			BufferedReader reader) {
 
 		try {
 			System.out

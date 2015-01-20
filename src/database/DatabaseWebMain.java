@@ -23,15 +23,18 @@ public class DatabaseWebMain {
 		server.addConnector(connector);
 
 		
-		StudentDatabase database = new StudentDatabase("Your School");
+		StudentDatabaseWeb database = new StudentDatabaseWeb("Your School");
 		
 		// create a service handler
 		ServiceHandler serviceHandler = new ServiceHandler();
+		
 		// register our service that handles requests from simple-web-framework
 		serviceHandler.registerWebService(new HomeService(database));
 		serviceHandler.registerWebService(new ModifyService(database));
-		//serviceHandler.registerWebService(new SearchService(database));
+		serviceHandler.registerWebService(new SearchService(database));
 		serviceHandler.registerWebService(new ViewService(database));
+		serviceHandler.registerWebService(new ExportService(database));
+		
 		// register a displayer of String results
 		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
 		

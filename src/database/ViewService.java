@@ -12,9 +12,9 @@ import javax.ws.rs.QueryParam;
 @Path("/home")
 public class ViewService {
 
-	private final StudentDatabase db;
+	private final StudentDatabaseWeb db;
 	
-	public ViewService(StudentDatabase db){
+	public ViewService(StudentDatabaseWeb db){
 		this.db = db;
 	}
 	

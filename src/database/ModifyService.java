@@ -12,18 +12,16 @@ import javax.ws.rs.QueryParam;
 @Path("/home/modify")
 public class ModifyService {
 
-	private final StudentDatabase db;
+	private final StudentDatabaseWeb db;
 
-	public ModifyService(StudentDatabase db) {
+	public ModifyService(StudentDatabaseWeb db) {
 		this.db = db;
 	}
 
 	@Path("")
 	@GET
 	@WebMethod
-	public String modify(//
-			@QueryParam("value")//
-			int value) {
+	public String modify() {
 
 		StringBuilder sb = new StringBuilder();
 
@@ -34,6 +32,7 @@ public class ModifyService {
 		sb.append("<form action='http://localhost:8080/home/modify/add'><input type='submit' value='Add a Student'></form>");
 		sb.append("<form action='http://localhost:8080/home/modify/edit'><input type='submit' value='Edit a Student'></form>");
 		sb.append("<form action='http://localhost:8080/home/modify/remove'><input type='submit' value='Remove a Student'></form>");
+		sb.append("<form action='http://localhost:8080/home'><input type='submit' value='Return Home'></form>");
 
 		sb.append("</body></html>\n");
 		return sb.toString();
@@ -51,26 +50,25 @@ public class ModifyService {
 		sb.append("<h1> ADD </h1>\n");
 
 		sb.append("<p><form>\n");
-		sb.append("First Name: <input name='firstName' type='text'/>");
-		sb.append("Last Name: <input name='lastName' type='text'/>");
-		sb.append("Age: <input name='age' type='text'/>");
+		sb.append("First Name: <input name='firstName' required type='text'/>");
+		sb.append("Last Name: <input name='lastName' required type='text'/>");
+		sb.append("Age: <input name='age' required type='text'/>");
 		sb.append("<input type='submit' />\n");
 		sb.append("</body></html>\n");
-		sb.append(firstName);
-		sb.append(lastName);
-		sb.append(age);
 		sb.append("</form></p>\n");
+		
+		sb.append("<br/><br/> <br/>");
 
-		//if (!firstName.isEmpty()) {
-		//	db.addStudent(firstName, lastName, age);
-			sb.append("<h1>");
+		if (firstName != null && !firstName.trim().isEmpty()) {
+			sb.append("Success! You have added the following student: ");
 			sb.append(db.addStudent(firstName, lastName, age));
-			sb.append("</h1>\n");
-//		}
-//		else{
-//			sb.append("Failed to add student");
-//		}
+		}
+		else{
+			sb.append("Failed to add student");
+		}
 		sb.append("</html></body>\n");
+		sb.append("<br />");
+		sb.append("<form action='http://localhost:8080/home'><input type='submit' value='Return Home'></form>");
 		
 		return sb.toString();
 	}
@@ -88,6 +86,9 @@ public class ModifyService {
 		sb.append("<h1> EDIT </h1>\n");
 
 		sb.append("</body></html>\n");
+		sb.append("<br />");
+		sb.append("<form action='http://localhost:8080/home'><input type='submit' value='Return Home'></form>");
+
 		return sb.toString();
 	}
 
@@ -104,6 +105,9 @@ public class ModifyService {
 		sb.append("<h1> REMOVE </h1>\n");
 
 		sb.append("</body></html>\n");
+		sb.append("<br />");
+		sb.append("<form action='http://localhost:8080/home'><input type='submit' value='Return Home'></form>");
+
 		return sb.toString();
 	}
 
