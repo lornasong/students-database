@@ -25,39 +25,42 @@ public class SearchService {
 			@QueryParam("id") String id) {
 
 		StringBuilder sb = new StringBuilder();
-
-		sb.append("<html><body>\n");
-		sb.append("<h1> Search </h1>\n");
-		sb.append("</body></html>\n");
-
-		sb.append("<p><form>\n");
-		sb.append("Full Name: <input name='fullName' type='text'/>");
-		sb.append("ID: <input name='id' type='text'/>");
-		sb.append("<input type='submit' />\n");
-		sb.append("</body></html>\n");
-		sb.append("</form></p>\n");
 		
-		sb.append("<br/><br/> Results: <br/>");
+		//String indent = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";//or <blockquote>...</...>
+
+		sb.append("<html>\n");
+		sb.append("<center><font face = 'verdana'><h1>").append("SEARCH").append("</h1></font></center>\n");
+		sb.append("<hr width = '95%' size = '5' color = '#270A33'/>\n");
+
+		sb.append("<body>\n");
+		sb.append("<p><font face = 'verdana'><blockquote><form>\n");
+		sb.append("Full Name: <input name='fullName' type='text'/>\n");//.append().append()
+		sb.append("ID: <input name='id' type='text'/>\n");
+		sb.append("<input type='submit' />\n");
+
+		sb.append("");
+		
+		sb.append("<br/><br/>").append("Results: <br/>\n");
 
 		// Case that ID is empty. Query using full name
 		if (id != null && !id.trim().isEmpty()) {
-			
 			try {
 				int idInt = Integer.parseInt(id);
-				sb.append(db.getStudentByParameters(fullName, idInt));
+				sb.append(db.searchStudentByParameters(fullName, idInt));
 			} catch (NumberFormatException nfe) {
 				sb.append("The ID is invalid");
 			}
 			
-			
 		} else {
-			sb.append(db.getStudentByParameters(fullName, 0));
+			sb.append(db.searchStudentByParameters(fullName, 0));
 		}
 		
-		sb.append("<br />");
-		sb.append("<form action='http://localhost:8080/home'><input type='submit' value='Return Home'></form>");
-
-
+		sb.append("<br/></form>\n");
+		sb.append("<form action='http://localhost:8080/home'><input type='submit' value='Return Home'></form>\n");
+		sb.append("</blockquote></font></p>\n</body>\n</html>\n");
+		
+		//close <html>
+		//use /n to break html code lines
 		return sb.toString();
 	}
 }

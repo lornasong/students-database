@@ -1,12 +1,16 @@
 package database;
 
+import java.io.File;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import freemarker.template.Configuration;
 
 import com.j256.simplewebframework.displayer.StringResultDisplayer;
-import com.j256.simplewebframework.handler.LoggingHandler;
+import com.j256.simplewebframework.freemarker.FreemarkerHtmlDisplayer;
 import com.j256.simplewebframework.handler.ServiceHandler;
+import com.j256.simplewebframework.resource.FileLocator;
 
 public class DatabaseWebMain {
 	
@@ -31,17 +35,25 @@ public class DatabaseWebMain {
 		// register our service that handles requests from simple-web-framework
 		serviceHandler.registerWebService(new HomeService(database));
 		serviceHandler.registerWebService(new ModifyService(database));
-		serviceHandler.registerWebService(new SearchService(database));
-		serviceHandler.registerWebService(new ViewService(database));
-		serviceHandler.registerWebService(new ExportService(database));
+		//serviceHandler.registerWebService(new testService());
+		//serviceHandler.registerWebService(new SearchService(database));
+		//serviceHandler.registerWebService(new ViewService(database));
 		
 		// register a displayer of String results
 		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
 		
+//		FreemarkerHtmlDisplayer displayer = new FreemarkerHtmlDisplayer();
+//		FileLocator fileLocator = new FileLocator(new File("target/classes"), new String [] { "index.html" });
+//		displayer.setFileLocator(fileLocator);
+//		Configuration configuration = new Configuration();
+//		displayer.setTemplateConfig(configuration);
+//		serviceHandler.registerResultDisplayer(displayer);
+//		
+//		HandlerCollection handlers = new HandlerCollection();
+//		handlers.addHandler(serviceHandler);
+		
 		server.setHandler(serviceHandler);
 
-
-		// server.setHandler(context);
 		server.start();
 	}
 

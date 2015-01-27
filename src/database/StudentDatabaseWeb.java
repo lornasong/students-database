@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class StudentDatabaseWeb {
 	 * Needs to be redone for more complex search queries.
 	 * Get ID as a string to consider cases when ID is not inputed e.g. ''
 	 */
-	public String getStudentByParameters(String fullName, int id){
+	public String searchStudentByParameters(String fullName, int id){
 		
 		//If ID field is provided, check only ID since ID is unique.		
 		if (id > 0){
@@ -51,11 +52,17 @@ public class StudentDatabaseWeb {
 		if (fullName != null && !fullName.trim().isEmpty()){
 			for (Student student : studentList) {
 
-				if (student.getFullName().equals(fullName)) {
+				if (student.getFullName().equalsIgnoreCase(fullName)) {
 					matches = matches + "<br/>" + student.toString();
 				}
 			}
-			return matches;
+			
+			if(matches.equals("")){
+				return "No matches";
+			}
+			else{
+				return matches;
+			}
 		}
 		
 		return "No matches";
@@ -129,10 +136,23 @@ public class StudentDatabaseWeb {
 				sb.append(student); // This is the student.toString()
 				sb.append("<br/>");
 			}
-
 			return sb.toString();
 		}
-
+	}
+	
+	public String getStudentListById() {
+		Collections.sort(getStudentList(), new IdComparator());
+		return getStudentListString();
+	}
+	
+	public String getStudentListByLastName() {
+		Collections.sort(getStudentList(), new LastNameComparator());
+		return getStudentListString();
+	}
+	
+	public String getStudentListByAge() {
+		Collections.sort(getStudentList(), new AgeComparator());
+		return getStudentListString();
 	}
 	
 	public List<Student> getStudentList(){
@@ -200,8 +220,8 @@ public class StudentDatabaseWeb {
 			// very expensive. synchronized. try buffered writer wrapped in
 
 			out.println("ID,Student Name,Age");
-
-			for (Student s : getStudentList()) {
+			
+			for (Student s : studentList) {
 				out.println(s.getID() + "," + s.getFullName() + ", "
 						+ s.getAge());
 			}
