@@ -17,7 +17,7 @@ public class SearchService {
 	public SearchService(StudentDatabaseWeb db) {
 		this.db = db;
 	}
-
+	
 	@Path("")
 	@GET
 	@WebMethod
@@ -26,19 +26,15 @@ public class SearchService {
 
 		StringBuilder sb = new StringBuilder();
 		
-		//String indent = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";//or <blockquote>...</...>
-
 		sb.append("<html>\n");
 		sb.append("<center><font face = 'verdana'><h1>").append("SEARCH").append("</h1></font></center>\n");
 		sb.append("<hr width = '95%' size = '5' color = '#270A33'/>\n");
 
 		sb.append("<body>\n");
 		sb.append("<p><font face = 'verdana'><blockquote><form>\n");
-		sb.append("Full Name: <input name='fullName' type='text'/>\n");//.append().append()
+		sb.append("Full Name: <input name='fullName' type='text'/>\n");
 		sb.append("ID: <input name='id' type='text'/>\n");
 		sb.append("<input type='submit' />\n");
-
-		sb.append("");
 		
 		sb.append("<br/><br/>").append("Results: <br/>\n");
 

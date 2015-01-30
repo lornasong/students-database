@@ -8,10 +8,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 /**
- * Includes all web services with url "/home/modify" base.
- * Which includes the modify default page, add, edit, and remove pages.
+ * Includes all web services with url "/home/modify" base. Which includes the
+ * modify default page, add, edit, and remove pages.
  * 
  * Allows users to perform these three actions on their database
+ * 
  * @author lornasong
  *
  */
@@ -22,29 +23,32 @@ public class ModifyService {
 
 	private final StudentDatabaseWeb db;
 
+	private int idModify;
+
 	public ModifyService(StudentDatabaseWeb db) {
 		this.db = db;
 	}
 
 	/**
-	 * This is the header and buttons that will show up on all modification type pages.
-	 * That is, on the Add, Edit, and Remove pages.
-	 * Header will have button options to go to each page as well as "return home"
+	 * This is the header and buttons that will show up on all modification type
+	 * pages. That is, on the Add, Edit, and Remove pages. Header will have
+	 * button options to go to each page as well as "return home"
 	 */
-	public String modifyPageHeader(){
-		
+	public String modifyPageHeader() {
+
 		StringBuilder sb = new StringBuilder();
 
-		//Header Title
+		// Header Title
 		sb.append("<html>\n");
-		sb.append("<center><font face = 'verdana'><h1>").append("MODIFICATIONS").append("</h1></font></center>\n");
+		sb.append("<center><font face = 'verdana'><h1>")
+				.append("MODIFICATIONS").append("</h1></font></center>\n");
 		sb.append("<hr width = '95%' size = '5' color = '#270A33'>");
 
-		//Buttons: Add, Edit, Remove, Home
+		// Buttons: Add, Edit, Remove, Home
 		sb.append("<body><blockquote>");
 		sb.append("<form action='http://localhost:8080/home'><input type='submit' value='Return Home' style = 'float: right'></form>");
-		sb.append("<form action='http://localhost:8080/home/modify/remove'><input type='submit' value='Remove a Student' style = 'float: right'></form>");		
-		sb.append("<form action='http://localhost:8080/home/modify/edit'><input type='submit' value='Edit a Student' style = 'float: right'></form>");		
+		sb.append("<form action='http://localhost:8080/home/modify/remove'><input type='submit' value='Remove a Student' style = 'float: right'></form>");
+		sb.append("<form action='http://localhost:8080/home/modify/edit'><input type='submit' value='Edit a Student' style = 'float: right'></form>");
 		sb.append("<form action='http://localhost:8080/home/modify/add'><input type='submit' value='Add a Student' style = 'float: right'></form>");
 		sb.append("</blockquote></body></html>\n");
 		return sb.toString();
@@ -61,8 +65,8 @@ public class ModifyService {
 	}
 
 	/**
-	 * Add student page. Has the modify header. Allows user to add students to database.
-	 * User must include First name, Last name, and Age information.
+	 * Add student page. Has the modify header. Allows user to add students to
+	 * database. User must include First name, Last name, and Age information.
 	 */
 	@Path("/add")
 	@GET
@@ -70,36 +74,36 @@ public class ModifyService {
 	public String modifyAddStudent(@QueryParam("firstName") String firstName,
 			@QueryParam("lastName") String lastName, @QueryParam("age") int age) {
 
-		
 		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 		StringBuilder sb = new StringBuilder();
-		
-		//Page header
+
+		// Page header
 		sb.append(modifyPageHeader());
-		
-		//Input parameters
+
+		// Input parameters
 		sb.append("<html>\n");
 		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
 		sb.append("<br/>").append("ADD").append("<br/>");
 		sb.append("First Name: <input name='firstName' required type='text'/>\n");
-		sb.append(tab).append("Last Name: <input name='lastName' required type='text'/>\n");
-		sb.append(tab).append("Age: <input name='age' required type='text'/>\n");
+		sb.append(tab).append(
+				"Last Name: <input name='lastName' required type='text'/>\n");
+		sb.append(tab)
+				.append("Age: <input name='age' required type='text'/>\n");
 		sb.append("<input type='submit' />\n");
-		
-		//Return: confirmation that student is added or fail
+
+		// Return: confirmation that student is added or fail
 		sb.append("<br/><br/><br/>\n");
 
 		if (firstName != null && !firstName.trim().isEmpty()) {
 			sb.append(db.addStudent(firstName, lastName, age));
-		}
-		else{
+		} else {
 			sb.append("Failed to add student");
 		}
-		
-		//Close
+
+		// Close
 		sb.append("</form></blockform></font></html></body></p>\n");
-		
+
 		return sb.toString();
 	}
 
@@ -109,20 +113,69 @@ public class ModifyService {
 	@Path("/edit")
 	@GET
 	@WebMethod
-	public String modifyEditStudent() {
+	public String modifyEditStudent(@QueryParam("id") String id) {
 
 		StringBuilder sb = new StringBuilder();
-		
 		sb.append(modifyPageHeader());
-		
-		sb.append("<html><body>\n");
-		
-		sb.append("<font face = 'verdana'><h1>");
-		sb.append("EDIT");
-		sb.append("</h1></font>\n");
 
-		sb.append("</body></html>\n");
+		sb.append("<html>\n");
+		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
 
+		// Search form
+		sb.append("<br/>")
+				.append("EDIT - Search ID of the Student You Wish To Add")
+				.append("<br/>");
+		sb.append("ID: <input name='id' type='number'/>\n");
+		sb.append("<input type='submit' /></form>\n");
+
+		sb.append("<br/><br/>").append("Results:\n");
+
+		// Try to parse id as an int
+		try {
+			int idInt = Integer.parseInt(id);
+			sb.append(db.searchStudentByParameters("null", idInt));
+			idModify = idInt;
+			sb.append("<form action='http://localhost:8080/home/modify/edit_form'><input type='submit' value='Edit'></form>");
+
+		} catch (NumberFormatException nfe) {
+			sb.append("The ID is invalid");
+		}
+
+		// Close
+		sb.append("</blockquote></font></html></body></p>\n");
+
+		return sb.toString();
+	}
+
+	/**
+	 * Incomplete
+	 */
+	@Path("/edit_form")
+	@GET
+	@WebMethod
+	public String modifyEditForm(@QueryParam("firstName") String firstName,
+			@QueryParam("lastName") String lastName, @QueryParam("age") int age) {
+
+		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(modifyPageHeader());
+
+		sb.append("<html>\n");
+		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
+		sb.append("<br/>").append("EDIT HERE").append("<br/>");
+
+		Student student = db.getStudentByID(idModify);
+		
+		sb.append("First Name: <input name='firstName' required type='text' placeholder = '").append(student.getFirstName()).append("'/>\n");
+		sb.append(tab).append("Last Name: <input name='lastName' required type='text' placeholder = '").append(student.getLastName()).append("'/>\n");
+		sb.append(tab).append("Age: <input name='age' required type='text' placeholder = '").append(student.getAge()).append("'/>\n");
+		
+		sb.append("<br/>").append(db.editStudentName(student, firstName, lastName, age));
+		
+		sb.append("<input type='submit' />\n");
+		sb.append("</blockquote></font></html></body></p>\n");
 		return sb.toString();
 	}
 
@@ -132,20 +185,56 @@ public class ModifyService {
 	@Path("/remove")
 	@GET
 	@WebMethod
-	public String modifyRemoveStudent() {
+	public String modifyRemoveStudent(@QueryParam("id") String id) {
 
 		StringBuilder sb = new StringBuilder();
 
+		sb.append(modifyPageHeader());
+
+		sb.append("<html>\n");
+		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
+		sb.append("<br/>").append("REMOVE").append("<br/>");
+		sb.append("ID: <input name='id' type='number'/>\n");
+		sb.append("<input type='submit' /></form>\n");
+
+		sb.append("<br/><br/>").append("Results:\n");
+
+		// Try to parse id as an int
+		try {
+			int idInt = Integer.parseInt(id);
+			sb.append(db.searchStudentByParameters("null", idInt));
+			idModify = idInt;
+			sb.append("<form action='http://localhost:8080/home/modify/remove_true'><input type='submit' value='Remove'></form>");
+
+		} catch (NumberFormatException nfe) {
+			sb.append("The ID is invalid");
+		}
+
+		// Close
+		sb.append("</blockquote></font></html></body></p>\n");
+
+		return sb.toString();
+	}
+
+	/**
+	 * Incomplete
+	 */
+	@Path("/remove_true")
+	@GET
+	@WebMethod
+	public String modifyRemoveTrue() {
+
+		StringBuilder sb = new StringBuilder();
 
 		sb.append(modifyPageHeader());
 
-		sb.append("<html><body>\n");
-		sb.append("<font face = 'verdana'><h1>");
-		sb.append("REMOVE");
-		sb.append("</h1></font>\n");
+		sb.append("<html>\n");
+		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
+		sb.append("<br/>").append("REMOVE").append("<br/>");
 
-		sb.append("</body></html>\n");
-
+		sb.append("<br/>").append(db.removeStudentByID(idModify))
+				.append("<br/>");
+		sb.append("</blockquote></font></html></body></p>\n");
 		return sb.toString();
 	}
 

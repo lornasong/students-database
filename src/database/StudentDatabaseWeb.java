@@ -29,45 +29,45 @@ public class StudentDatabaseWeb {
 		return schoolName;
 	}
 
-
 	/**
-	 * Updated:
-	 * Combination of getStudentbyID and getStudentByFullName and its search methods.
-	 * Needs to be redone for more complex search queries.
-	 * Get ID as a string to consider cases when ID is not inputed e.g. ''
+	 * Updated: Combination of getStudentbyID and getStudentByFullName and its
+	 * search methods. Needs to be redone for more complex search queries. Get
+	 * ID as a string to consider cases when ID is not inputed e.g.
+	 * 
 	 */
-	public String searchStudentByParameters(String fullName, int id){
-		
-		//If ID field is provided, check only ID since ID is unique.		
-		if (id > 0){
-			for (Student student : studentList){
-				if(student.getID() == id){
-					return "<br/>" + student.toString();
+	public String searchStudentByParameters(String fullName, int id) {
+
+		// If ID field is provided, check only ID since ID is unique.
+		if (id > 0) {
+			for (Student student : studentList) {
+				if (student.getID() == id) {
+
+					return "<br/>" + student.toString() ;
 				}
 			}
 		}
-		
-		//Find all students who have the full name with matches. May not be unique
+
+		// Find all students who have the full name with matches. May not be
+		// unique
 		String matches = "";
-		if (fullName != null && !fullName.trim().isEmpty()){
+		if (fullName != null && !fullName.trim().isEmpty()) {
 			for (Student student : studentList) {
 
 				if (student.getFullName().equalsIgnoreCase(fullName)) {
 					matches = matches + "<br/>" + student.toString();
 				}
 			}
-			
-			if(matches.equals("")){
+
+			if (matches.equals("")) {
 				return "No matches";
-			}
-			else{
+			} else {
 				return matches;
 			}
 		}
-		
+
 		return "No matches";
 	}
-
+	
 	/**
 	 * Look for student's full name in array list. Using for-each loop
 	 */
@@ -90,7 +90,7 @@ public class StudentDatabaseWeb {
 	 * Look for student id in array list. Using while loop iterator Notes: use
 	 * iterator when removing things from that array
 	 */
-	private Student getStudentByID(int studentID) {
+	public Student getStudentByID(int studentID) {
 
 		Iterator<Student> it = studentList.iterator();
 
@@ -117,10 +117,10 @@ public class StudentDatabaseWeb {
 		return student.toString() + " has been sucessfully added";
 	}
 
-	 /**
-	  * Returns list of students that breaks after each student using html.
-	  * Based off of StudentDatabase.printStudents()
-	  */
+	/**
+	 * Returns list of students that breaks after each student using html. Based
+	 * off of StudentDatabase.printStudents()
+	 */
 	public String getStudentListString() {
 
 		// Case that no student is enrolled
@@ -139,23 +139,23 @@ public class StudentDatabaseWeb {
 			return sb.toString();
 		}
 	}
-	
+
 	public String getStudentListById() {
 		Collections.sort(getStudentList(), new IdComparator());
 		return getStudentListString();
 	}
-	
+
 	public String getStudentListByLastName() {
 		Collections.sort(getStudentList(), new LastNameComparator());
 		return getStudentListString();
 	}
-	
+
 	public String getStudentListByAge() {
 		Collections.sort(getStudentList(), new AgeComparator());
 		return getStudentListString();
 	}
-	
-	public List<Student> getStudentList(){
+
+	public List<Student> getStudentList() {
 		return studentList;
 	}
 
@@ -180,6 +180,15 @@ public class StudentDatabaseWeb {
 		}
 
 	}
+	
+	/**
+	 * Assumes ID has already been searched and existed
+	 */
+	public String removeStudentByID(int id){
+		Student student = getStudentByID(id);
+		studentList.remove(student);	
+		return "Student ID:" + id + " has been successfully disenrolled";
+	}
 
 	/**
 	 * Returns the student ID for a query of a student name
@@ -197,19 +206,36 @@ public class StudentDatabaseWeb {
 		return student.getFullName();
 	}
 
-	public void editStudentName(Student student, String newFirstName,
-			String newLastName) {
-		student.setFirstName(newFirstName);
-		student.setLastName(newLastName);
+	public String editStudentName(Student student, String newFirstName,
+			String newLastName, int newAge) {
+		if (newFirstName.trim().isEmpty()){
+			return "Error: Please enter a first name";
+		}
+		else{
+			if (newLastName.trim().isEmpty()){
+				return "Error: Please enter a last name";
+			}
+			else{
+				if(newAge < 0){
+					return "Error: Please enter a valid age";
+				}
+				else{
+					student.setFirstName(newFirstName);
+					student.setLastName(newLastName);
+					student.setAge(newAge);
+					return student.toString() + " has been successfully modified.";
+				}
+			}
+		}
+			
 	}
-	
+
 	/**
-	 * Saves user's database as a csv file named by the school on
-	 * desktop
+	 * Saves user's database as a csv file named by the school on desktop
 	 */
 	public String saveDataAsCsv() {
-		String filename = "/Users/lornasong/Desktop/"
-				+ getSchoolName() + ".csv";
+		String filename = "/Users/lornasong/Desktop/" + getSchoolName()
+				+ ".csv";
 
 		File file = new File(filename);
 
@@ -220,7 +246,7 @@ public class StudentDatabaseWeb {
 			// very expensive. synchronized. try buffered writer wrapped in
 
 			out.println("ID,Student Name,Age");
-			
+
 			for (Student s : studentList) {
 				out.println(s.getID() + "," + s.getFullName() + ", "
 						+ s.getAge());

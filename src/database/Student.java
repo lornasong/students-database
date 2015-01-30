@@ -47,6 +47,10 @@ public class Student {
 	public void setLastName(String newLastName){
 		this.lastName = newLastName;
 	}
+	
+	public void setAge(int newAge){
+		this.age = newAge;
+	}
 
 	@Override//return a different int for every student
 	//trying to calculate a unique number for each student

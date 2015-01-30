@@ -36,8 +36,8 @@ public class DatabaseWebMain {
 		serviceHandler.registerWebService(new HomeService(database));
 		serviceHandler.registerWebService(new ModifyService(database));
 		//serviceHandler.registerWebService(new testService());
-		//serviceHandler.registerWebService(new SearchService(database));
-		//serviceHandler.registerWebService(new ViewService(database));
+		serviceHandler.registerWebService(new SearchService(database));
+		serviceHandler.registerWebService(new ViewService(database));
 		
 		// register a displayer of String results
 		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
