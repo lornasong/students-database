@@ -55,7 +55,7 @@ public class ModifyService {
 	}
 
 	/**
-	 * Modify 'home' page which only has header of options. Body is blank
+	 * MODIFY HOME page which only has header of options. Body is blank
 	 */
 	@Path("")
 	@GET
@@ -65,7 +65,7 @@ public class ModifyService {
 	}
 
 	/**
-	 * Add student page. Has the modify header. Allows user to add students to
+	 * ADD student page. Has the modify header. Allows user to add students to
 	 * database. User must include First name, Last name, and Age information.
 	 */
 	@Path("/add")
@@ -108,7 +108,9 @@ public class ModifyService {
 	}
 
 	/**
-	 * Incomplete
+	 * EDIT SEARCH student page. Allows user to enter ID of student they would like to
+	 * edit. Once user selects and confirms to edit the student, they will be
+	 * linked to /edit_form to make actual edits to student information.
 	 */
 	@Path("/edit")
 	@GET
@@ -130,12 +132,12 @@ public class ModifyService {
 
 		sb.append("<br/><br/>").append("Results:\n");
 
-		// Try to parse id as an int
+		// Check if ID number is valid.
 		try {
 			int idInt = Integer.parseInt(id);
 			sb.append(db.searchStudentByParameters("null", idInt));
 			idModify = idInt;
-			sb.append("<form action='http://localhost:8080/home/modify/edit_form'><input type='submit' value='Edit'></form>");
+			sb.append("<form action='http://localhost:8080/home/modify/edit/form'><input type='submit' value='Edit'></form>");
 
 		} catch (NumberFormatException nfe) {
 			sb.append("The ID is invalid");
@@ -148,16 +150,19 @@ public class ModifyService {
 	}
 
 	/**
-	 * Incomplete
+	 * EDIT FORM opens once a user selects the specific student they want to
+	 * edit. A text box opens for: first name, last name, and age. The default
+	 * original first, last, and age are pre-filled in the fields. User can
+	 * modify and submit changes. After submission, user will receive a
+	 * confirmation.
 	 */
-	@Path("/edit_form")
+	@Path("/edit/form")
 	@GET
 	@WebMethod
 	public String modifyEditForm(@QueryParam("firstName") String firstName,
 			@QueryParam("lastName") String lastName, @QueryParam("age") int age) {
 
 		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(modifyPageHeader());
@@ -167,20 +172,32 @@ public class ModifyService {
 		sb.append("<br/>").append("EDIT HERE").append("<br/>");
 
 		Student student = db.getStudentByID(idModify);
-		
-		sb.append("First Name: <input name='firstName' required type='text' placeholder = '").append(student.getFirstName()).append("'/>\n");
-		sb.append(tab).append("Last Name: <input name='lastName' required type='text' placeholder = '").append(student.getLastName()).append("'/>\n");
-		sb.append(tab).append("Age: <input name='age' required type='text' placeholder = '").append(student.getAge()).append("'/>\n");
-		
-		sb.append("<br/>").append(db.editStudentName(student, firstName, lastName, age));
-		
+
+		// Form with pre-filled values.
+		sb.append(
+				"First Name: <input name='firstName' required type='text' value = '")
+				.append(student.getFirstName()).append("'/>\n");
+		sb.append(tab)
+				.append("Last Name: <input name='lastName' required type='text' value = '")
+				.append(student.getLastName()).append("'/>\n");
+		sb.append(tab)
+				.append("Age: <input name='age' required type='text' value = '")
+				.append(student.getAge()).append("'/>\n");
 		sb.append("<input type='submit' />\n");
+
+		// Initial check if response is committed. If so, edit!
+		if (firstName != null && !firstName.trim().isEmpty()) {
+			sb.append("<br/><br/>").append(
+					db.editStudentName(student, firstName, lastName, age));
+		}
 		sb.append("</blockquote></font></html></body></p>\n");
 		return sb.toString();
 	}
 
 	/**
-	 * Incomplete
+	 * REMOVE student page. Allows user to enter ID of student they would like to
+	 * remove. Once user selects and confirms to remove the student, they will be
+	 * linked to /remove_true confirmation page.
 	 */
 	@Path("/remove")
 	@GET
@@ -204,7 +221,7 @@ public class ModifyService {
 			int idInt = Integer.parseInt(id);
 			sb.append(db.searchStudentByParameters("null", idInt));
 			idModify = idInt;
-			sb.append("<form action='http://localhost:8080/home/modify/remove_true'><input type='submit' value='Remove'></form>");
+			sb.append("<form action='http://localhost:8080/home/modify/remove/true'><input type='submit' value='Remove'></form>");
 
 		} catch (NumberFormatException nfe) {
 			sb.append("The ID is invalid");
@@ -217,9 +234,9 @@ public class ModifyService {
 	}
 
 	/**
-	 * Incomplete
+	 * REMOVE TRUE student page. Confirmation page for when "Remove" button is clicked for student.
 	 */
-	@Path("/remove_true")
+	@Path("/remove/true")
 	@GET
 	@WebMethod
 	public String modifyRemoveTrue() {

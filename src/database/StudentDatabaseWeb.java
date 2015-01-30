@@ -29,6 +29,20 @@ public class StudentDatabaseWeb {
 		return schoolName;
 	}
 
+	public List<Student> getStudentList() {
+		return studentList;
+	}
+
+	/**
+	 * Creates an instance of Student and adds object to arrayList of database
+	 */
+	public String addStudent(String firstName, String lastName, int age) {
+		Student student = new Student(firstName, lastName, age);
+		studentList.add(student);
+
+		return student.toString() + " has been sucessfully added";
+	}
+
 	/**
 	 * Updated: Combination of getStudentbyID and getStudentByFullName and its
 	 * search methods. Needs to be redone for more complex search queries. Get
@@ -42,7 +56,7 @@ public class StudentDatabaseWeb {
 			for (Student student : studentList) {
 				if (student.getID() == id) {
 
-					return "<br/>" + student.toString() ;
+					return "<br/>" + student.toString();
 				}
 			}
 		}
@@ -67,12 +81,10 @@ public class StudentDatabaseWeb {
 
 		return "No matches";
 	}
-	
+
 	/**
-	 * Look for student's full name in array list. Using for-each loop
+	 * Look for student's full name in array list. Using for-each loop.
 	 */
-	// Combine findStudentByName and findStudentByID using a method as a
-	// parameter
 	public Student getStudentByFullName(String fullName) {
 
 		for (Student student : studentList) {
@@ -108,18 +120,8 @@ public class StudentDatabaseWeb {
 	}
 
 	/**
-	 * Creates an instance of Student and adds object to arrayList of database
-	 */
-	public String addStudent(String firstName, String lastName, int age) {
-		Student student = new Student(firstName, lastName, age);
-		studentList.add(student);
-
-		return student.toString() + " has been sucessfully added";
-	}
-
-	/**
 	 * Returns list of students that breaks after each student using html. Based
-	 * off of StudentDatabase.printStudents()
+	 * off of StudentDatabase.printStudents(). Intended use is for web page.
 	 */
 	public String getStudentListString() {
 
@@ -140,94 +142,67 @@ public class StudentDatabaseWeb {
 		}
 	}
 
+	/**
+	 * Sorts studentList by ID then returns list in format for html view
+	 * webpage.
+	 */
 	public String getStudentListById() {
 		Collections.sort(getStudentList(), new IdComparator());
 		return getStudentListString();
 	}
 
+	/**
+	 * Sorts studentList by last name then returns list in format for html view
+	 * webpage.
+	 */
 	public String getStudentListByLastName() {
 		Collections.sort(getStudentList(), new LastNameComparator());
 		return getStudentListString();
 	}
 
+	/**
+	 * Sorts studentList by age then returns list in format for html view
+	 * webpage.
+	 */
 	public String getStudentListByAge() {
 		Collections.sort(getStudentList(), new AgeComparator());
 		return getStudentListString();
 	}
 
-	public List<Student> getStudentList() {
-		return studentList;
-	}
-
 	/**
-	 * Calls findStudentByFullName(fullName) If is not found, print error
-	 * message Else student full name is found, remove object and print message
+	 * Allows user to update first name, last name, and/or age for a particular
+	 * student.
 	 */
-	public void removeStudent(String fullName) {
-
-		Student student = getStudentByFullName(fullName);
-
-		// Student is not in array list
-		if (student == null) {
-			System.out.println("Error: Student is not enrolled at "
-					+ getSchoolName());
-		}
-		// Student is in array list
-		else {
-			studentList.remove(student);
-			System.out
-					.println(fullName + " has been removed from the database");
+	public String editStudentName(Student student, String newFirstName,
+			String newLastName, int newAge) {
+		if (newFirstName.trim().isEmpty()) {
+			return "Error: Please enter a first name";
+		} else {
+			if (newLastName.trim().isEmpty()) {
+				return "Error: Please enter a last name";
+			} else {
+				if (newAge < 0) {
+					return "Error: Please enter a valid age";
+				} else {
+					student.setFirstName(newFirstName);
+					student.setLastName(newLastName);
+					student.setAge(newAge);
+					return student.toString()
+							+ " has been successfully modified.";
+				}
+			}
 		}
 
 	}
 	
 	/**
-	 * Assumes ID has already been searched and existed
+	 * Assumes ID has already been searched and existed. Does not have error
+	 * handling.
 	 */
-	public String removeStudentByID(int id){
+	public String removeStudentByID(int id) {
 		Student student = getStudentByID(id);
-		studentList.remove(student);	
+		studentList.remove(student);
 		return "Student ID:" + id + " has been successfully disenrolled";
-	}
-
-	/**
-	 * Returns the student ID for a query of a student name
-	 */
-	public int searchByFullName(String userInput) {
-		Student student = getStudentByFullName(userInput);
-		return student.getID();
-	}
-
-	/**
-	 * Returns the student's full name for a query of a student ID
-	 */
-	public String searchByID(int studentId) {
-		Student student = getStudentByID(studentId);
-		return student.getFullName();
-	}
-
-	public String editStudentName(Student student, String newFirstName,
-			String newLastName, int newAge) {
-		if (newFirstName.trim().isEmpty()){
-			return "Error: Please enter a first name";
-		}
-		else{
-			if (newLastName.trim().isEmpty()){
-				return "Error: Please enter a last name";
-			}
-			else{
-				if(newAge < 0){
-					return "Error: Please enter a valid age";
-				}
-				else{
-					student.setFirstName(newFirstName);
-					student.setLastName(newLastName);
-					student.setAge(newAge);
-					return student.toString() + " has been successfully modified.";
-				}
-			}
-		}
-			
 	}
 
 	/**
@@ -259,6 +234,47 @@ public class StudentDatabaseWeb {
 
 		} catch (IOException e) {
 			return "Error saving file";
+		}
+
+	}
+
+	/**
+	 * DEPRECATED: NOT USED FOR WEB PAGE Returns the student ID for a query of a
+	 * student name
+	 */
+	public int searchByFullName(String userInput) {
+		Student student = getStudentByFullName(userInput);
+		return student.getID();
+	}
+
+	/**
+	 * DEPRECATED: NOT USED FOR WEB PAGE Returns the student's full name for a
+	 * query of a student ID
+	 */
+	public String searchByID(int studentId) {
+		Student student = getStudentByID(studentId);
+		return student.getFullName();
+	}
+
+	/**
+	 * DEPRECATED: NOT USED FOR WEB PAGE Calls findStudentByFullName(fullName)
+	 * If is not found, print error message Else student full name is found,
+	 * remove object and print message
+	 */
+	public void removeStudent(String fullName) {
+
+		Student student = getStudentByFullName(fullName);
+
+		// Student is not in array list
+		if (student == null) {
+			System.out.println("Error: Student is not enrolled at "
+					+ getSchoolName());
+		}
+		// Student is in array list
+		else {
+			studentList.remove(student);
+			System.out
+					.println(fullName + " has been removed from the database");
 		}
 
 	}
