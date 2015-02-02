@@ -1,10 +1,12 @@
 package database;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
+
 import freemarker.template.Configuration;
 
 import com.j256.simplewebframework.displayer.StringResultDisplayer;
@@ -49,10 +51,11 @@ public class DatabaseWebMain {
 //		displayer.setTemplateConfig(configuration);
 //		serviceHandler.registerResultDisplayer(displayer);
 //		
-//		HandlerCollection handlers = new HandlerCollection();
-//		handlers.addHandler(serviceHandler);
+		HandlerCollection handlers = new HandlerCollection();
+		handlers.addHandler(serviceHandler);
+		handlers.addHandler(new WrongUrlHandler());
 		
-		server.setHandler(serviceHandler);
+		server.setHandler(handlers);
 
 		server.start();
 	}

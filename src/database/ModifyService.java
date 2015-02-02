@@ -92,9 +92,10 @@ public class ModifyService {
 				.append("Age: <input name='age' required type='text'/>\n");
 		sb.append("<input type='submit' />\n");
 
+		
 		// Return: confirmation that student is added or fail
 		sb.append("<br/><br/><br/>\n");
-
+		
 		if (firstName != null && !firstName.trim().isEmpty()) {
 			sb.append(db.addStudent(firstName, lastName, age));
 		} else {
