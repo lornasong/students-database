@@ -29,7 +29,7 @@ public class WrongUrlHandler extends AbstractHandler {
 			// don't do anything if we are committed
 			return;
 		}
-		response.setStatus(200);
+		response.setStatus(HttpServletResponse.SC_NOT_FOUND);//404
 		
 		baseRequest.setHandled(true);
 		response.setContentType("text/html");

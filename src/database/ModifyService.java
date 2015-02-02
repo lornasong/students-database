@@ -68,6 +68,11 @@ public class ModifyService {
 	 * ADD student page. Has the modify header. Allows user to add students to
 	 * database. User must include First name, Last name, and Age information.
 	 */
+	// TODO: make age into stringAge. Parse it into int in method.
+	// Make pages for when requests don't make sense. When user types in wrong
+	// input type, should be handled. not show E messages. Return content from
+	// page.
+	// Do data input handling in method.
 	@Path("/add")
 	@GET
 	@WebMethod
@@ -92,10 +97,9 @@ public class ModifyService {
 				.append("Age: <input name='age' required type='text'/>\n");
 		sb.append("<input type='submit' />\n");
 
-		
 		// Return: confirmation that student is added or fail
 		sb.append("<br/><br/><br/>\n");
-		
+
 		if (firstName != null && !firstName.trim().isEmpty()) {
 			sb.append(db.addStudent(firstName, lastName, age));
 		} else {
@@ -109,9 +113,9 @@ public class ModifyService {
 	}
 
 	/**
-	 * EDIT SEARCH student page. Allows user to enter ID of student they would like to
-	 * edit. Once user selects and confirms to edit the student, they will be
-	 * linked to /edit_form to make actual edits to student information.
+	 * EDIT SEARCH student page. Allows user to enter ID of student they would
+	 * like to edit. Once user selects and confirms to edit the student, they
+	 * will be linked to /edit_form to make actual edits to student information.
 	 */
 	@Path("/edit")
 	@GET
@@ -196,9 +200,9 @@ public class ModifyService {
 	}
 
 	/**
-	 * REMOVE student page. Allows user to enter ID of student they would like to
-	 * remove. Once user selects and confirms to remove the student, they will be
-	 * linked to /remove_true confirmation page.
+	 * REMOVE student page. Allows user to enter ID of student they would like
+	 * to remove. Once user selects and confirms to remove the student, they
+	 * will be linked to /remove_true confirmation page.
 	 */
 	@Path("/remove")
 	@GET
@@ -235,7 +239,8 @@ public class ModifyService {
 	}
 
 	/**
-	 * REMOVE TRUE student page. Confirmation page for when "Remove" button is clicked for student.
+	 * REMOVE TRUE student page. Confirmation page for when "Remove" button is
+	 * clicked for student.
 	 */
 	@Path("/remove/true")
 	@GET

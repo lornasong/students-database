@@ -44,13 +44,13 @@ public class DatabaseWebMain {
 		// register a displayer of String results
 		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
 		
-//		FreemarkerHtmlDisplayer displayer = new FreemarkerHtmlDisplayer();
-//		FileLocator fileLocator = new FileLocator(new File("target/classes"), new String [] { "index.html" });
-//		displayer.setFileLocator(fileLocator);
-//		Configuration configuration = new Configuration();
-//		displayer.setTemplateConfig(configuration);
-//		serviceHandler.registerResultDisplayer(displayer);
-//		
+		FreemarkerHtmlDisplayer displayer = new FreemarkerHtmlDisplayer();
+		FileLocator fileLocator = new FileLocator(new File("target/classes"), new String [] { "index.html" });
+		displayer.setFileLocator(fileLocator);
+		Configuration configuration = new Configuration();
+		displayer.setTemplateConfig(configuration);
+		serviceHandler.registerResultDisplayer(displayer);
+		
 		HandlerCollection handlers = new HandlerCollection();
 		handlers.addHandler(serviceHandler);
 		handlers.addHandler(new WrongUrlHandler());
