@@ -37,13 +37,14 @@ public class DatabaseWebMain {
 		// register our service that handles requests from simple-web-framework
 		serviceHandler.registerWebService(new HomeService(database));
 		serviceHandler.registerWebService(new ModifyService(database));
-		//serviceHandler.registerWebService(new testService());
 		serviceHandler.registerWebService(new SearchService(database));
 		serviceHandler.registerWebService(new ViewService(database));
 		
 		// register a displayer of String results
 		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
 		
+		//Stuff for to use Freemarker instead of stringbuilding html
+		//Has errors. Need to press forward twice. Page will render.
 		FreemarkerHtmlDisplayer displayer = new FreemarkerHtmlDisplayer();
 		FileLocator fileLocator = new FileLocator(new File("target/classes"), new String [] { "index.html" });
 		displayer.setFileLocator(fileLocator);
@@ -51,12 +52,12 @@ public class DatabaseWebMain {
 		displayer.setTemplateConfig(configuration);
 		serviceHandler.registerResultDisplayer(displayer);
 		
+		//Handlers
 		HandlerCollection handlers = new HandlerCollection();
 		handlers.addHandler(serviceHandler);
 		handlers.addHandler(new WrongUrlHandler());
 		
 		server.setHandler(handlers);
-
 		server.start();
 	}
 

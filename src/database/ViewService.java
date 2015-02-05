@@ -1,10 +1,15 @@
 package database;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+
+import com.j256.simplewebframework.freemarker.ModelView;
 
 /**
  * Provides a web view of the students enrolled based on id, age, or lastname.
@@ -24,10 +29,55 @@ public class ViewService {
 		this.db = db;
 	}
 
+	
 	/**
-	 * Header contains "Modification" title. Bar. Provides Buttons for options to
-	 * view by id, age, or lastname or return home.
+	 * Default page. View/Export student database by ID
 	 */
+	@Path("/view_id")
+	@GET
+	@WebMethod
+	public ModelView viewById() {
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		model.put("viewType", "VIEW BY ID");
+		model.put("exportCsv", db.saveDataAsCsv());
+		model.put("listBy", db.getStudentListById());
+		return new ModelView(model, "/view.html");
+	}
+
+	/**
+	 * View/Export student database by last name
+	 */
+	@Path("/view_lastname")
+	@GET
+	@WebMethod
+	public ModelView viewByLastName() {
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		model.put("viewType", "VIEW BY LAST NAME");
+		model.put("exportCsv", db.saveDataAsCsv());
+		model.put("listBy", db.getStudentListByLastName());
+		return new ModelView(model, "/view.html");
+	}
+
+	/**
+	 * View/Export student database by age
+	 */
+	@Path("/view_age")
+	@GET
+	@WebMethod
+	public ModelView viewByAge() {
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		model.put("viewType", "VIEW BY AGE");
+		model.put("exportCsv", db.saveDataAsCsv());
+		model.put("listBy", db.getStudentListByAge());
+		return new ModelView(model, "/view.html");
+	}
+
+/*DEPRECATED FOR FREEMARKER
+	// Header contains "Modification" title. Bar. Provides Buttons for options
+	// to view by id, age, or lastname or return home.
 	public String viewPageHeader(String type) {
 
 		StringBuilder sb = new StringBuilder();
@@ -49,9 +99,7 @@ public class ViewService {
 
 	}
 
-	/**
-	 * Footer of page only has export to csv button.
-	 */
+	// Footer of page only has export to csv button.
 	public String viewPageFooter() {
 		StringBuilder sb = new StringBuilder();
 
@@ -64,9 +112,7 @@ public class ViewService {
 		return sb.toString();
 	}
 
-	/**
-	 * Default page. View/Export student database by ID
-	 */
+
 	@Path("/view_id")
 	@GET
 	@WebMethod
@@ -86,9 +132,6 @@ public class ViewService {
 		return sb.toString();
 	}
 
-	/**
-	 * View/Export student database by last name
-	 */
 	@Path("/view_lastname")
 	@GET
 	@WebMethod
@@ -108,9 +151,6 @@ public class ViewService {
 		return sb.toString();
 	}
 
-	/**
-	 * View/Export student database by age
-	 */
 	@Path("/view_age")
 	@GET
 	@WebMethod
@@ -128,5 +168,5 @@ public class ViewService {
 		sb.append(viewPageFooter());
 
 		return sb.toString();
-	}
+	}*/
 }

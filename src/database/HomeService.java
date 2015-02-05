@@ -26,30 +26,7 @@ public class HomeService {
 	public HomeService(StudentDatabaseWeb db) {
 		this.db = db;
 	}
-
-//	@GET
-//	@WebMethod
-//	public String home() {
-//		
-//		StringBuilder sb = new StringBuilder();
-//
-//		sb.append("<center><font face = 'verdana'><h1>Welcome to ");
-//		sb.append(db.getSchoolName());
-//		sb.append("</h1></font></center>\n");
-//		sb.append("<hr width = '95%' size = '5' color = '#270A33' align = 'center'>");
-//
-//		sb.append("<font face = 'verdana'><blockquote>\n").append("<br/>\n");
-//		sb.append("Please Select an Action Your Database:")
-//				.append("<br/><br/>");
-//
-//		sb.append("<form action='home/modify'><input type='submit' value='Modify'></form>\n");
-//		sb.append("<form action='home/search'><input type='submit' value='Search'></form>\n");
-//		sb.append("<form action='home/view_id'><input type='submit' value='View & Export'>\n");
-//		sb.append("</form></blockquote></font></body></html>\n");
-//		
-//		return sb.toString();
-//	}
-
+	
 	 @GET
 	 @WebMethod
 	 public ModelView home() {
@@ -68,4 +45,29 @@ public class HomeService {
 	 model.put("name", "gray");
 	 return new ModelView(model, "/test.html");
 	 }
+
+
+/*	Deprecated for Freemarker.
+ * @GET
+	@WebMethod
+	public String home() {
+		
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("<center><font face = 'verdana'><h1>Welcome to ");
+		sb.append(db.getSchoolName());
+		sb.append("</h1></font></center>\n");
+		sb.append("<hr width = '95%' size = '5' color = '#270A33' align = 'center'>");
+
+		sb.append("<font face = 'verdana'><blockquote>\n").append("<br/>\n");
+		sb.append("Please Select an Action Your Database:")
+				.append("<br/><br/>");
+
+		sb.append("<form action='home/modify'><input type='submit' value='Modify'></form>\n");
+		sb.append("<form action='home/search'><input type='submit' value='Search'></form>\n");
+		sb.append("<form action='home/view_id'><input type='submit' value='View & Export'>\n");
+		sb.append("</form></blockquote></font></body></html>\n");
+		
+		return sb.toString();
+	}*/
 }
