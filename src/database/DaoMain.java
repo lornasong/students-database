@@ -1,5 +1,7 @@
 package database;
 
+import java.sql.SQLException;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -55,7 +57,18 @@ public class DaoMain {
 		studentDao = DaoManager.createDao(connectionSource, Student.class);
 
 		// if you need to create the table
-		TableUtils.createTable(connectionSource, Student.class);
+		//TableUtils.createTableIfNotExists(connectionSource, Student.class);
+	}
+	
+	//make add methods here
+	public void addStudentToDatabase(Student student) {
+		System.out.println("Hello!");
+		try {
+			studentDao.create(student);
+		} catch (SQLException e) {
+			System.out.println("Error: adding student");//know what you were doing when got this error
+			e.printStackTrace();
+		}
 	}
 
 }
