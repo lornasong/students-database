@@ -30,15 +30,13 @@ public class DatabaseWebMain {
 
 		
 		StudentDatabaseWeb database = new StudentDatabaseWeb("Your School");
-		DaoMain dao = new DaoMain();
-		dao.doMain(null);
 		
 		// create a service handler
 		ServiceHandler serviceHandler = new ServiceHandler();
 		
 		// register our service that handles requests from simple-web-framework
 		serviceHandler.registerWebService(new HomeService(database));
-		serviceHandler.registerWebService(new ModifyService(dao));
+		serviceHandler.registerWebService(new ModifyService(database));
 		serviceHandler.registerWebService(new SearchService(database));
 		serviceHandler.registerWebService(new ViewService(database));
 		
