@@ -25,21 +25,14 @@ public class DaoMain {
 			// create our data-source for the database
 			connectionSource = new JdbcConnectionSource("jdbc:mysql://localhost/java?" + "user=root&password=");
 
-			// instantiate dao
-			// studentDao = DaoManager.createDao(connectionSource,
-			// Student.class);
-
 			// setup our database and DAOs
 			setupDatabase(connectionSource);
-			// // read and write some data
-			// readWriteData();
-			// // do a bunch of bulk operations
-			// readWriteBunch();
+
 			// // show how to use the SelectArg object
 			// useSelectArgFeature();
 			// // show how to use the SelectArg object
 			// useTransactions(connectionSource);
-			System.out.println("\n\nIt seems to have worked\n\n");
+			System.out.println("\n\nConnection Worked\n\n");
 
 		} finally {
 			// destroy the data source which should close underlying connections
@@ -61,10 +54,10 @@ public class DaoMain {
 	}
 	
 	//make add methods here
-	public void addStudentToDatabase(Student student) {
+	public void addStudentToDatabase(String firstName, String lastName, int age) {
 		System.out.println("Adding Student!");
 		try {
-			studentDao.create(student);
+			studentDao.create(new Student(firstName, lastName, age));
 		} catch (SQLException e) {
 			System.out.println("Error: adding student");//know what you were doing when got this error
 			e.printStackTrace();

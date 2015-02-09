@@ -20,16 +20,9 @@ public class StudentDatabaseWeb {
 
 	private final String schoolName;
 	private final List<Student> studentList = new ArrayList<Student>();
-	private DaoMain daoMain = new DaoMain();
 	
 	public StudentDatabaseWeb(String schoolName) {
 		this.schoolName = schoolName;
-		try {
-			daoMain.doMain(null);
-		} catch (Exception e) {
-			System.out.println("Error: setting up dao main");
-			e.printStackTrace();
-		}
 	}
 
 	public String getSchoolName() {
@@ -46,8 +39,6 @@ public class StudentDatabaseWeb {
 	public String addStudent(String firstName, String lastName, int age) {
 		Student student = new Student(firstName, lastName, age);
 		studentList.add(student);
-		// use DAO to add student to db TODO
-		daoMain.addStudentToDatabase(student);
 		return student.toString() + " has been sucessfully added";
 	}
 
