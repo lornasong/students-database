@@ -62,7 +62,7 @@ public class DaoMain {
 	
 	//make add methods here
 	public void addStudentToDatabase(Student student) {
-		System.out.println("Hello!");
+		System.out.println("Adding Student!");
 		try {
 			studentDao.create(student);
 		} catch (SQLException e) {
